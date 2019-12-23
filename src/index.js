@@ -10,9 +10,7 @@ const run = async () => {
   const text = await page.$eval(".fp-one-cita a", heading => {
     return heading.innerText;
   });
-
   console.log(text);
-
   page.close();
 };
 
