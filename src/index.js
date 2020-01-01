@@ -13,6 +13,7 @@ const run = async () => {
   console.log(text);
   await page.close();
   await browser.disconnect();
+  process.exit(0)
 };
 
 run();
