@@ -4,51 +4,44 @@ const querystring = require('querystring')
 
 const md5 = crypto.createHash('md5')
 
-const env = process.env
+module.exports = function send_sms(smsapi, user, password, content, phone) {
 
-const smsapi = "api.smsbao.com"
-// 短信平台账号
-const user = env.USERNAME
-// 短信平台密码
-const password = env.PASSWORD
-// 要发送的短信内容
-const content = "短信内容"
-// 要发送短信的手机号码
-const phone = env.PHONE
+  return new Promise((resolve, reject) => {
 
-send_sms(smsapi, user, password, content, phone)
+    const pass = md5.update(password).digest('hex')
+    const data = {
+      'u': user,
+      'p': pass,
+      'm': phone,
+      'c': content
+    }
+    const content = querystring.stringify(data);
+    const options = {
+      hostname: smsapi,
+      path: '/sms?' + content,
+      method: 'GET'
+    }
 
-function send_sms(smsapi, user, password, content, phone) {
-  const pass = md5.update(password).digest('hex')
-  const data = {
-    'u': user,
-    'p': pass,
-    'm': phone,
-    'c': content
-  }
-  const content = querystring.stringify(data);
-  const sendmsg = '';
-  const options = {
-    hostname: smsapi,
-    path: '/sms?' + content,
-    method: 'GET'
-  }
-
-  const req = http.request(options, function (res) {
-    res.setEncoding('utf-8');
-    res.on('data', function (result) {
-      statusStr(result)
+    const req = http.request(options, function (res) {
+      res.setEncoding('utf-8');
+      res.on('data', function (result) {
+        statusStr(result, resolve)
+      });
+      res.on('end', function () {
+      });
     });
-    res.on('end', function () {
+    req.on('error', function (err) {
+      console.error(err);
     });
-  });
-  req.on('error', function (err) {
-    console.error(err);
-  });
-  req.end();
+    req.end();
+
+
+  })
+
+
 }
 
-function statusStr(result) {
+function statusStr(result, resolve) {
   switch (result) {
     case '0':
       console.log('短信发送成功')
@@ -78,4 +71,6 @@ function statusStr(result) {
       console.log('内容含有敏感字')
       break
   }
+
+  resolve()
 }
