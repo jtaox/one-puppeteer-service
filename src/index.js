@@ -10,12 +10,14 @@ const run = async () => {
     waitUtil: "networkidle2"
   });
 
-  const content = await page.$eval(".fp-one-cita a", heading => {
+  let content = await page.$eval(".fp-one-cita a", heading => {
     return heading.innerText;
   });
 
   await page.close();
   await browser.disconnect();
+
+  content = `【生活引擎】${content}`
 
   const env = process.env
 
