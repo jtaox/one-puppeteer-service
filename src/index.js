@@ -11,7 +11,8 @@ const run = async () => {
     return heading.innerText;
   });
   console.log(text);
-  page.close();
+  await page.close();
+  await browser.disconnect();
 };
 
 run();
