@@ -4,15 +4,17 @@ const querystring = require('querystring')
 
 const md5 = crypto.createHash('md5')
 
+const env = process.env
+
 const smsapi = "api.smsbao.com"
 // 短信平台账号
-const user = "fujiangtao"
+const user = env.USERNAME
 // 短信平台密码
-const password = "****"
+const password = env.PASSWORD
 // 要发送的短信内容
 const content = "短信内容"
 // 要发送短信的手机号码
-const phone = "*****"
+const phone = env.PHONE
 
 send_sms(smsapi, user, password, content, phone)
 
