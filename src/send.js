@@ -15,10 +15,10 @@ module.exports = function send_sms(smsapi, user, password, content, phone) {
       'm': phone,
       'c': content
     }
-    const content = querystring.stringify(data);
+    const smsContent = querystring.stringify(data);
     const options = {
       hostname: smsapi,
-      path: '/sms?' + content,
+      path: '/sms?' + smsContent,
       method: 'GET'
     }
 
